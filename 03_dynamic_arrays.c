@@ -77,7 +77,7 @@ int remove_element(dynamic_array_t *dynamic_array, int index) {
     return -1;
   } 
   printf("Removed element %d from index %d\n", dynamic_array->array[index], index);
-  for (int i = index; i < dynamic_array->length; i++) {
+  for (int i = index; i < dynamic_array->length - 1; i++) {
     dynamic_array->array[i] = dynamic_array->array[i + 1];
   }
   dynamic_array->length--;
