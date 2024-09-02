@@ -58,7 +58,7 @@ int resize_the_array(dynamic_array_t *dynamic_array) {
       printf("Memory reallocation failed\n");
       return -1;
     }
-    // if realloc doesn't fail, assign the reallocation result back ta dynamic_array->array
+    // if realloc doesn't fail, assign the reallocation result back to dynamic_array->array
     dynamic_array->array = temp;
     dynamic_array->capacity *= 2;
     printf("Array capacity reached its limit and now has been doubled to %d\n", dynamic_array->capacity);
