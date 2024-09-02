@@ -149,7 +149,7 @@ typedef union {
 } IntUnion;
 
 int main() {
-    int ids[MAX_IDS] = {4294967295, 1, 2};  // Example array with a specific pattern
+    int ids[MAX_IDS] = {0x12345678, 1, 2};  // Example array with a specific pattern
     IntUnion u;  // Create a union instance
 
     u.intValue = ids[0];  // Assign ids[0] to the integer value of the union
