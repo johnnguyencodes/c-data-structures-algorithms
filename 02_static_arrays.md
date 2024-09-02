@@ -45,3 +45,22 @@ Here are the notes based on the transcript you provided, focusing on static arra
 ---
 
 These notes summarize the key points about static arrays, focusing on their properties, the efficiency of various operations, and the limitations that arise from their fixed size.
+
+---
+
+[Remove Duplicates from Sorted Array - LeetCode](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
+
+``` c
+int removeDuplicates(int* nums, int numsSize) {
+    int writeIndex = 0;
+    for (int readIndex = 1; readIndex < numsSize; readIndex++) {
+        if (nums[readIndex] != nums[writeIndex]) {
+            writeIndex++;
+            nums[writeIndex] = nums[readIndex];
+        }
+    }
+    return writeIndex + 1;
+
+```
+
+
