@@ -84,3 +84,100 @@ This line of code is doing the following:
 
 ### **Plain English Summary:**
 This line of code allocates enough memory to store an array of integers of size `INITIAL_SIZE` and then assigns the address of this memory block to the `array` member of the structure pointed to by `pA`. This allows the dynamic array to store up to `INITIAL_SIZE` integersw
+
+
+---
+
+Certainly! Here’s a collection of the errors you encountered while working on dynamic arrays, along with explanations and their fixes:
+
+### 1. **Incorrect Assignment in `read_array` Function**
+   - **Error:** 
+     ```c
+     if (dynamic_array->length = 0) {
+     ```
+     The `=` operator is used for assignment, not comparison.
+   - **Fix:**
+     ```c
+     if (dynamic_array->length == 0) {
+     ```
+     Use `==` for comparison. This checks if `dynamic_array->length` is equal to `0`.
+
+### 2. **Incorrect Array Indexing**
+   - **Error:** 
+     ```c
+     dynamic_array->array[dynamic_array->length - 1] = element;
+     ```
+     Using `length - 1` as the index causes an out-of-bounds write when inserting a new element. This assumes that the element is being inserted at the last position of the array, but the array is zero-indexed, so this would cause an overwrite or an incorrect insertion.
+   - **Fix:**
+     ```c
+     dynamic_array->array[dynamic_array->length] = element;
+     ```
+     Simply use `length` as the index when inserting the new element.
+
+### 3. **Order of Memory Deallocation**
+   - **Error:** 
+     ```c
+     free(array);
+     free(array->array);
+     ```
+     The memory allocated for `array` is freed before the internal `array->array` is freed. This can cause undefined behavior.
+   - **Fix:**
+     ```c
+     free(array->array);
+     free(array);
+     ```
+     Always free the internal pointers before freeing the structure itself.
+
+### 4. **Segmentation Fault Due to Invalid Memory Access**
+   - **Error:**
+     ```c
+     dynamic_array_t *array = (dynamic_array_t *)malloc(sizeof(dynamic_array_t));
+     ```
+     Although this correctly allocates memory for the `dynamic_array_t` structure, the internal array (`array->array`) was not allocated before accessing it.
+   - **Fix:**
+     Ensure that the internal array is initialized after allocating the structure:
+     ```c
+     pA->array = (int *)malloc(sizeof(int) * INITIAL_SIZE);
+     ```
+     This line allocates memory for the internal integer array.
+
+### 5. **Improper Use of `realloc`**
+   - **Error:**
+     ```c
+     dynamic_array->array = (int *)realloc(dynamic_array->array, dynamic_array->capacity * sizeof(int));
+     ```
+     Not checking the result of `realloc` can lead to memory leaks if the reallocation fails.
+   - **Fix:**
+     ```c
+     int *temp = (int *)realloc(dynamic_array->array, dynamic_array->capacity * sizeof(int));
+     if (temp == NULL) {
+         printf("Memory reallocation failed\n");
+         exit(1);
+     }
+     dynamic_array->array = temp;
+     ```
+     Store the result of `realloc` in a temporary pointer and check if it’s `NULL`. If it’s not `NULL`, assign it back to `dynamic_array->array`.
+
+### 6. **Misunderstanding of Pointer Dereferencing**
+   - **Error:** 
+     ```c
+     dynamic_array_t *array = (dynamic_array_t *)malloc(sizeof(dynamic_array_t)); 
+     ```
+     This was correct, but understanding why it's correct involves understanding that this pointer is pointing to a block of memory that’s been allocated for a structure, not for the internal array.
+   - **Fix:** Understanding the difference between allocating memory for a structure and for an internal array. Ensure that after the structure is allocated, the internal array also gets allocated:
+     ```c
+     pA->array = (int *)malloc(sizeof(int) * INITIAL_SIZE);
+     ```
+
+### 7. **Incorrect Use of the Assignment Operator in a Conditional**
+   - **Error:**
+     ```c
+     if (dynamic_array->length = 0)
+     ```
+     This assigns `0` to `dynamic_array->length` instead of checking if it's `0`.
+   - **Fix:**
+     ```c
+     if (dynamic_array->length == 0)
+     ```
+
+Each of these errors highlights different aspects of working with C, such as memory management, pointer manipulation, and proper syntax for operations like comparisons and assignments. By addressing these errors and understanding the underlying concepts, you’ll build a stronger foundation in C programming, especially when working with dynamic memory and data structures.
