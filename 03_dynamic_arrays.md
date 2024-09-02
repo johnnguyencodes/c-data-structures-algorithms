@@ -181,3 +181,159 @@ Certainly! Here’s a collection of the errors you encountered while working on 
      ```
 
 Each of these errors highlights different aspects of working with C, such as memory management, pointer manipulation, and proper syntax for operations like comparisons and assignments. By addressing these errors and understanding the underlying concepts, you’ll build a stronger foundation in C programming, especially when working with dynamic memory and data structures.
+
+---
+
+[Concatenation of Array - LeetCode](https://leetcode.com/problems/concatenation-of-array/)
+
+## Solution
+```c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* getConcatenation(int* nums, int numsSize, int* returnSize) {
+
+    // allocating memory for the concatenated array
+    int* ans = (int*)malloc(sizeof(int) * numsSize * 2);
+
+    // Set the return size, per requirements
+    *returnSize = numsSize * 2;
+
+    for (int i = 0; i < numsSize; i++) {
+        ans[i] = nums[i];
+    }
+
+    for (int i = 0; i < numsSize; i++) {
+        ans[i + numsSize] = nums[i];
+    }
+
+    return ans;
+
+}
+```
+
+## Original submission
+
+```c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* getConcatenation(int* nums, int numsSize, int* returnSize) {
+    typedef struct {
+        int *array;
+        int length;
+        int capacity;
+    } dynamic_array_t;
+
+    // allocating memory for the structure
+    dynamic_array_t *ans = (dynamic_array_t *)malloc(sizeof(numsSize * 2));
+
+    // initializing the array
+    ans->capacity = (int *)malloc(sizeof(int) * numsSize * 2);
+    ans->length = 0;
+    ans->capacity = numsSize * 2;
+
+    for (int i = 0; i < *nums.length; i++) {
+        dynamic_array->ans[i] = *nums[i]
+    }
+
+    for (int i = 0; i < *nums.length; i++) {
+        dynamic_array->ans[i + numsSize] = *nums[i];
+    }
+
+    return ans;
+
+}
+```
+
+## Explanation
+
+You're on the right path conceptually, but there are some issues in your code that need to be corrected for it to work correctly. Let’s walk through the corrections step by step.
+
+### 1. **Understanding the Task**:
+You need to concatenate an array with itself. For example, if `nums = [1, 2, 1]`, the result should be `[1, 2, 1, 1, 2, 1]`.
+
+### 2. **Defining the Function and Memory Allocation**:
+You don’t need to use a `dynamic_array_t` structure since you’re simply returning a new array that’s the concatenation of `nums` with itself. Instead, you can directly allocate memory for the new array.
+
+### 3. **Correcting the Code**:
+
+Here's a corrected version of your code:
+
+```c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* getConcatenation(int* nums, int numsSize, int* returnSize) {
+    // Step 1: Allocate memory for the concatenated array
+    int* ans = (int*)malloc(sizeof(int) * numsSize * 2);
+    
+    // Step 2: Check if malloc was successful
+    if (ans == NULL) {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+
+    // Step 3: Set the return size (this is required as per the function signature)
+    *returnSize = numsSize * 2;
+
+    // Step 4: Copy elements from nums to the new array twice
+    for (int i = 0; i < numsSize; i++) {
+        ans[i] = nums[i];               // First half
+        ans[i + numsSize] = nums[i];    // Second half
+    }
+
+    // Step 5: Return the concatenated array
+    return ans;
+}
+```
+
+### 4. **Explanation of Corrections**:
+
+1. **Memory Allocation**: 
+    - The allocation of memory for the array was incorrect in your initial code. Instead of allocating memory for a struct, you should allocate memory directly for the concatenated array (`int *ans = malloc(sizeof(int) * numsSize * 2);`).
+
+2. **Setting `returnSize`**: 
+    - Since the function signature specifies `int* returnSize`, this should be set to the size of the returned array (`*returnSize = numsSize * 2;`).
+
+3. **Copying Elements**: 
+    - The loop should iterate over `numsSize`, not `*nums.length`. Also, in the loop, you need to directly assign the values from the `nums` array to the new array `ans`.
+
+4. **Avoiding Structures**: 
+    - Since you’re just returning an array, you don't need to use a struct. This simplifies the code.
+
+5. **Return Statement**: 
+    - The returned value is the pointer to the newly allocated array (`return ans;`).
+
+### 5. **Common Mistakes**:
+- **Memory Allocation**: Always ensure that memory is allocated correctly and that the size calculation is accurate.
+- **Pointer Dereferencing**: When working with pointers and arrays, ensure you’re accessing elements correctly (`nums[i]` instead of `*nums[i]`).
+- **Return Size**: Remember to set the `returnSize` correctly as it informs the caller of the size of the returned array.
+
+### 6. **Testing the Function**:
+To test this function, you can write a simple main function:
+
+```c
+#include <stdio.h>
+
+int main() {
+    int nums[] = {1, 2, 1};
+    int numsSize = 3;
+    int returnSize;
+    
+    int* result = getConcatenation(nums, numsSize, &returnSize);
+    
+    // Print the result array
+    for (int i = 0; i < returnSize; i++) {
+        printf("%d ", result[i]);
+    }
+    printf("\n");
+    
+    // Free the allocated memory
+    free(result);
+    
+    return 0;
+}
+```
+
+This code should output `1 2 1 1 2 1`, which is the correct concatenation of the `nums` array with itself.
