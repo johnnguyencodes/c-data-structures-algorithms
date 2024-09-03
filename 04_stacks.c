@@ -58,7 +58,7 @@ int push_to_stack(stack_t *pS, int element) {
     printf("Can't push element to top of stack due to memory reallocation error\n");
     return -1;
   }
-  pS->array[pS->length - 1] = element;
+  pS->array[pS->length] = element;
   printf("Element %d has been pushed to top of stack at index %d\n", element, pS->length);
   pS->length++;
   printf("Stack length is now %d\n", pS->length);
@@ -74,6 +74,7 @@ int pop_from_stack(stack_t *pS) {
   printf("Element %d has been popped off the stack\n", popped_value);
   pS->length--;
   printf("Stack length is now %d\n", pS->length);
+  return popped_value;
 }
 
 int clear_stack(stack_t *pS) {
