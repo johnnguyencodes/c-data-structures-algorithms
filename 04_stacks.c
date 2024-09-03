@@ -48,7 +48,7 @@ int peek_top_of_stack(stack_t *pS) {
     printf("Stack is empty, cannot peek top of stack\n");
     return -1;
   }
-  int top = pS->array[pS->length - 1];
+  int top = pS->array[pS->length - 1]; // using length - 1 because I am accessing the last element of the array
   printf("Value at top of stack: %d\n", top);
   return top;
 }
@@ -58,8 +58,8 @@ int push_to_stack(stack_t *pS, int element) {
     printf("Can't push element to top of stack due to memory reallocation error\n");
     return -1;
   }
-  pS->array[pS->length] = element;
-  printf("Element %d has been pushed to top of stack at index %d\n", element, pS->length);
+  pS->array[pS->length] = element;  // adding a new element to the end of the stack
+  printf("Element %d has been pushed to top of stack at index %d\n", element, pS->length); // Haven't updated length yet, so it's ok to not use length - 1
   pS->length++;
   printf("Stack length is now %d\n", pS->length);
   return 0;
@@ -70,7 +70,8 @@ int pop_from_stack(stack_t *pS) {
     printf("Stack is empty, can't pop from stack\n");
     return -1;
   }
-  int popped_value = pS->array[pS->length - 1];
+  int popped_value = pS->array[pS->length - 1]; // using length - 1 because I am accessing the last element of the array
+  check_if_empty_stack(stack);
   printf("Element %d has been popped off the stack\n", popped_value);
   pS->length--;
   printf("Stack length is now %d\n", pS->length);
